@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -5,7 +6,7 @@ import java.io.IOException;
 public class Archivator {
     public static void main(String[] args) {
         if (args.length < 3) {
-            System.out.println("Použití: java FileToBits <výstupní_soubor> <vstup1> <vstup2> ...");
+            System.out.println("Použití: java Archivator <výstupní_soubor> <vstup1> <vstup2> ...");
             return;
         }
 
@@ -36,16 +37,11 @@ public class Archivator {
                     fos.write(charInBinary.getBytes());
                 }
 
-                //Zapsat délku souboru
-                int size = 0;
-                try (FileInputStream fis = new FileInputStream(inputFile)) {
-                    while (fis.read() != -1) {
-                        size++;
-                    }
-                }
+                // Zapsat délku souboru
+                int size = Math.toIntExact(new File(inputFile).length()); // Délka souboru bez toho, abych ho musel celý číst
                 String sizeInBinary = String.format("%32s", Integer.toBinaryString(size)).replace(' ', '0');
                 fos.write(sizeInBinary.getBytes());
-                System.out.println("Soubor: " + inputFile + " --> délka: " + (size) + " znaků");
+                System.out.println("Soubor: " + inputFile + " --> délka: " + size + " bajtů");
 
                 // Zapsat obsah souboru
                 try (FileInputStream fis = new FileInputStream(inputFile)) {
