@@ -1,2 +1,0 @@
-Obsah souboru input.txt -> ahoj
-Obsah souboru input2.txt -> bobe
